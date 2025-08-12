@@ -18,19 +18,16 @@
     <div class="revealed-content" id="revealedContent">
         <div class="love-message">
             <h1>Buat Elaa ❤️</h1>
-            <p>Terima kasih sudah jadi bagian terbaik dalam hidupku</p>
-            <p>Kamu adalah alasan mengapa hari-hariku penuh warna</p>
-            <p>Semoga kita selalu bersama sampai tua nanti</p>
+            <p>alooo my bee my fav fortune teller, si cenayang yang selalu buat hari-hari aku penuh semangattt xixi, maafin akuu yaa kalao respon akuu kurang ngenakinn, akuu engga ada maksud bikin kamu sedihh, akuu sukaa kamuu yang clingy lagiii, xixi makasii yaa sudaa di pukpuk kemarinn, akuu maw pukpuk kamuu tapiii kemarin akuu malu sangatt <span>>_<</span> kemarin seruuu bangettt, bisa gendong ciluu jugaaa, HAHAHA kemarin ciluu kepalanya kena olii hihi XD</p>
+            <img class="cat" src="asset/img/gifs_cat.gif" alt="">
+            <p>scan akuu yaaa <333</p>
+            <img class="cat" src="asset/img/tsonit.jpeg" alt="">
         </div>
 
         <div class="draggable-images" id="draggableContainer">
-            <!-- Draggable items akan ditambahkan via JavaScript -->
         </div>
     </div>
 
-    <div class="instruction" id="instruction">
-        💝 Drag gambar dan emoji ke mana saja yang kamu mau! 💝
-    </div>
 
 
     <script src="asset/js/anime.iife.min.js"></script>
@@ -47,7 +44,6 @@
         let clickAnim = null;
         let idleAnim = null;
 
-        // Draggable functionality
         let draggedElement = null;
         let initialX = 0;
         let initialY = 0;
@@ -56,7 +52,7 @@
 
         function makeDraggable(element) {
             element.addEventListener('mousedown', dragStart);
-            element.addEventListener('touchstart', dragStart);
+            element.addEventListener('touchstart', dragStart, { passive: false });
         }
 
         function dragStart(e) {
@@ -79,7 +75,7 @@
 
             document.addEventListener('mousemove', drag);
             document.addEventListener('mouseup', dragEnd);
-            document.addEventListener('touchmove', drag);
+            document.addEventListener('touchmove', drag, { passive: false });
             document.addEventListener('touchend', dragEnd);
         }
 
@@ -121,20 +117,13 @@
 
         function createDraggableItems() {
             const items = [
-                { type: 'heart', content: '❤️' },
                 { type: 'heart', content: '💖' },
-                { type: 'heart', content: '💕' },
                 { type: 'heart', content: '🌸' },
                 { type: 'heart', content: '🌹' },
                 { type: 'heart', content: '💐' },
-                { type: 'heart', content: '⭐' },
-                { type: 'heart', content: '✨' },
-                { type: 'heart', content: '🦋' },
-                { type: 'heart', content: '🎈' }
             ];
 
-            const containerRect = draggableContainer.getBoundingClientRect();
-            const itemSize = Math.min(80, window.innerWidth * 0.12); // Responsive item size
+            const itemSize = Math.min(80, window.innerWidth * 0.12);
 
             items.forEach((item, index) => {
                 const draggableItem = document.createElement('div');
@@ -149,14 +138,13 @@
                     draggableItem.appendChild(img);
                 }
 
-                // Better responsive positioning
                 const cols = Math.floor(window.innerWidth / (itemSize + 20));
                 const rows = Math.ceil(items.length / cols);
                 const col = index % cols;
                 const row = Math.floor(index / cols);
 
                 const startX = (window.innerWidth - (cols * (itemSize + 20) - 20)) / 2;
-                const startY = window.innerHeight * 0.6;
+                const startY = window.innerHeight * 0.9;
 
                 const randomX = startX + col * (itemSize + 20) + Math.random() * 20 - 10;
                 const randomY = startY + row * (itemSize + 20) + Math.random() * 20 - 10;
@@ -164,10 +152,9 @@
                 draggableItem.style.left = randomX + 'px';
                 draggableItem.style.top = randomY + 'px';
 
-                document.body.appendChild(draggableItem); // Append to body for full screen drag
+                document.body.appendChild(draggableItem);
                 makeDraggable(draggableItem);
 
-                // Animate in
                 anime({
                     targets: draggableItem,
                     scale: [0, 1],
@@ -180,29 +167,27 @@
             });
         }
 
-
         function startIdleAnimation() {
-            idleAnim = anime({
-                targets: envelopeClosed,
-                rotate: [
-                    { value: -1, duration: 1500, easing: 'easeInOutSine' },
-                    { value: 1, duration: 1500, easing: 'easeInOutSine' }
-                ],
-                loop: true,
-                direction: 'alternate'
-            });
+            if (envelopeClosed) {
+                idleAnim = anime({
+                    targets: envelopeClosed,
+                    rotate: [
+                        { value: -1, duration: 1500, easing: 'easeInOutSine' },
+                        { value: 1, duration: 1500, easing: 'easeInOutSine' }
+                    ],
+                    loop: true,
+                    direction: 'alternate'
+                });
+            }
         }
 
         backgroundCircle.classList.add('background-circle');
         document.body.insertBefore(backgroundCircle, document.body.firstChild);
 
-        // let hoverAnim = null;
-        // let clickAnim = null;
-
-
-
         function createSparkles() {
             const container = document.querySelector('.envelope-container');
+            if (!container) return; 
+
             for (let i = 0; i < 15; i++) {
                 let sparkle = document.createElement('div');
                 sparkle.classList.add('sparkle');
@@ -231,6 +216,7 @@
 
         function createFloatingHeartsOrFlowers() {
             const container = document.querySelector('.envelope-container');
+            if (!container) return; 
             const icons = ["❤️", "🌸", "💖", "💐"];
             for (let i = 0; i < 8; i++) {
                 let particle = document.createElement('div');
@@ -258,130 +244,122 @@
             }
         }
 
-        startIdleAnimation()
+        // Tambahkan pengecekan sebelum menjalankan animasi
+        if (envelopeClosed) {
+            startIdleAnimation();
 
-        // Animasi hover: denyut halus
-        envelopeClosed.addEventListener('mouseenter', () => {
-            if (clickAnim) return; // kalau sudah klik, jangan hover anim lagi
-            hoverAnim = anime({
-                targets: envelopeClosed,
-                scale: [
-                    { value: 1, duration: 700, easing: 'easeInOutSine' },
-                    { value: 1.05, duration: 700, easing: 'easeInOutSine' }
-                ],
-                loop: true,
-                direction: 'alternate'
-            });
-        });
-        envelopeClosed.addEventListener('mouseleave', () => {
-            if (hoverAnim) {
-                hoverAnim.pause();
-                hoverAnim = null;
-                anime({
+            envelopeClosed.addEventListener('mouseenter', () => {
+                if (clickAnim) return;
+                hoverAnim = anime({
                     targets: envelopeClosed,
-                    scale: 1,
-                    duration: 300,
-                    easing: 'easeOutQuad'
+                    scale: [
+                        { value: 1, duration: 700, easing: 'easeInOutSine' },
+                        { value: 1.05, duration: 700, easing: 'easeInOutSine' }
+                    ],
+                    loop: true,
+                    direction: 'alternate'
                 });
-            }
-        });
+            });
 
-        document.querySelector('.envelope-container').addEventListener('click', function () {
-            if (hoverAnim) {
-                hoverAnim.pause();
-                hoverAnim = null;
-            }
-            if (idleAnim) {
-                idleAnim.pause();
-                idleAnim = null;
-            }
-
-            clickAnim = anime({
-                targets: envelopeClosed,
-                scale: [1, 1.1],
-                duration: 400,
-                loop: 4,
-                direction: 'alternate',
-                easing: 'easeInOutSine',
-                complete: () => {
-                    // Animasi background circle
-                    anime({
-                        targets: backgroundCircle,
-                        width: ['0px', '300vw'],
-                        height: ['0px', '300vw'],
-                        backgroundColor: ['#ffffff', '#ffeaf0'],
-                        easing: 'easeInOutQuad',
-                        duration: 1500
-                    });
-
-                    // Fade out amplop tertutup
+            envelopeClosed.addEventListener('mouseleave', () => {
+                if (hoverAnim) {
+                    hoverAnim.pause();
+                    hoverAnim = null;
                     anime({
                         targets: envelopeClosed,
-                        opacity: 0,
-                        scale: 0.5,
-                        duration: 800,
-                        easing: 'easeInOutQuad',
-                        delay: 200
-                    });
-
-                    // Fade in amplop terbuka
-                    anime({
-                        targets: envelopeOpen,
-                        opacity: 1,
-                        scale: [0.5, 1.2, 1],
-                        duration: 800,
-                        easing: 'easeInOutQuad',
-                        delay: 200,
-                        complete: () => {
-                            createSparkles();
-                            createFloatingHeartsOrFlowers();
-
-                            // Hilangkan amplop setelah 2 detik dan tampilkan content
-                            setTimeout(() => {
-                                anime({
-                                    targets: '.envelope-container',
-                                    opacity: 0,
-                                    scale: 0.8,
-                                    duration: 1000,
-                                    easing: 'easeInOutQuad',
-                                    complete: () => {
-                                        document.querySelector('.envelope-container').style.display = 'none';
-
-                                        // Tampilkan revealed content
-                                        revealedContent.classList.add('show');
-
-                                        // Animate message
-                                        anime({
-                                            targets: '.love-message',
-                                            translateY: [50, 0],
-                                            opacity: [0, 1],
-                                            duration: 1000,
-                                            easing: 'easeOutQuad',
-                                            complete: () => {
-                                                // Show draggable items
-                                                createDraggableItems();
-
-                                                // Show instruction
-                                                setTimeout(() => {
-                                                    instruction.classList.add('show');
-                                                    anime({
-                                                        targets: instruction,
-                                                        translateY: [20, 0],
-                                                        duration: 500,
-                                                        easing: 'easeOutQuad'
-                                                    });
-                                                }, 500);
-                                            }
-                                        });
-                                    }
-                                });
-                            }, 2000);
-                        }
+                        scale: 1,
+                        duration: 300,
+                        easing: 'easeOutQuad'
                     });
                 }
             });
-        });
 
+            document.querySelector('.envelope-container').addEventListener('click', function () {
+                if (hoverAnim) {
+                    hoverAnim.pause();
+                    hoverAnim = null;
+                }
+                if (idleAnim) {
+                    idleAnim.pause();
+                    idleAnim = null;
+                }
+
+                clickAnim = anime({
+                    targets: envelopeClosed,
+                    scale: [1, 1.1],
+                    duration: 400,
+                    loop: 4,
+                    direction: 'alternate',
+                    easing: 'easeInOutSine',
+                    complete: () => {
+                        // ... (sisa kode animasi yang Anda berikan)
+                        anime({
+                            targets: backgroundCircle,
+                            width: ['0px', '300vw'],
+                            height: ['0px', '300vw'],
+                            backgroundColor: ['#ffffff', '#ffeaf0'],
+                            easing: 'easeInOutQuad',
+                            duration: 1500
+                        });
+
+                        anime({
+                            targets: envelopeClosed,
+                            opacity: 0,
+                            scale: 0.5,
+                            duration: 800,
+                            easing: 'easeInOutQuad',
+                            delay: 200
+                        });
+
+                        anime({
+                            targets: envelopeOpen,
+                            opacity: 1,
+                            scale: [0.5, 1.2, 1],
+                            duration: 800,
+                            easing: 'easeInOutQuad',
+                            delay: 200,
+                            complete: () => {
+                                createSparkles();
+                                createFloatingHeartsOrFlowers();
+
+                                setTimeout(() => {
+                                    anime({
+                                        targets: '.envelope-container',
+                                        opacity: 0,
+                                        scale: 0.8,
+                                        duration: 1000,
+                                        easing: 'easeInOutQuad',
+                                        complete: () => {
+                                            document.querySelector('.envelope-container').style.display = 'none';
+                                            revealedContent.classList.add('show');
+                                            anime({
+                                                targets: '.love-message',
+                                                translateY: [50, 0],
+                                                opacity: [0, 1],
+                                                duration: 1000,
+                                                easing: 'easeOutQuad',
+                                                complete: () => {
+                                                    createDraggableItems();
+                                                    setTimeout(() => {
+                                                        instruction.classList.add('show');
+                                                        anime({
+                                                            targets: instruction,
+                                                            translateY: [20, 0],
+                                                            duration: 500,
+                                                            easing: 'easeOutQuad'
+                                                        });
+                                                    }, 500);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }, 2000);
+                            }
+                        });
+                    }
+                });
+            });
+        }
 
 
         // const { animate } = anime;
