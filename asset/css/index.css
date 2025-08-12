@@ -4,7 +4,8 @@ body {
     align-items: center;     
     height: 100vh;           
     margin: 0;
-    background: linear-gradient(180deg, #fff4f7 0%, #ffeaf0 100%);
+    transition: background-color 1s ease;
+    /* background: linear-gradient(180deg, #fff4f7 0%, #ffeaf0 100%); */
 }
 
 .envelope-container {
@@ -27,7 +28,7 @@ body {
 }
 
 #envelopeOpen{
-    top: -33px
+    top: -115px
 }
 
 .sparkle {
@@ -47,13 +48,32 @@ body {
     font-size: 2vw; /* Sesuai lebar layar */
 }
 
+.background-circle {
+    position: fixed; /* agar selalu di belakang, dan menutupi viewport */
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: white; /* warna awal */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0; /* pastikan di belakang amplop */
+    pointer-events: none;
+}
+
+#letter {
+    pointer-events: none;
+    user-select: none;
+  }
+  
+
 /* --- RESPONSIVE BREAKPOINTS --- */
 @media (max-width: 768px) {
     .envelope-container {
         width: 70vw;
     }
     #envelopeOpen {
-        top: -200px;
+        top: -115px;
     }
     .floating-particle {
         font-size: 4vw;
@@ -65,7 +85,7 @@ body {
         width: 80vw;
     }
     #envelopeOpen {
-        top: -200px;
+        top: -115px;
     }
     .sparkle {
         width: 1vw;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,15 +14,21 @@
         }
     </style>
 </head>
+
 <body>
+    <div class="background-circle"></div>
     <div class="envelope-container">
-        <img src="asset/img/atutup.png" id="envelopeClosed" class="envelope" style="width: 89%; left: 17px;"/>
+        <img src="asset/img/atutup.png" id="envelopeClosed" class="envelope" style="width: 89%; left: 17px;" />
         <img src="asset/img/abuka.png" id="envelopeOpen" class="envelope" style="opacity: 0;" />
-      </div>
-      
-      <!-- <div class="square"></div> -->
-      
-      <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script> -->
+        <div id="letter"
+            style="opacity:0; position: absolute; top: 60%; left: 50%; transform: translate(-50%, 20px); max-width: 80%; text-align: center; font-family: 'Cursive', sans-serif; font-size: 1.2rem; color: #d6336c;">
+            <p>Dear Kamu, terima kasih sudah jadi bagian terbaik dalam hidupku 💖</p>
+        </div>
+    </div>
+
+    <!-- <div class="square"></div> -->
+
+    <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script> -->
     <!-- <script type="module">
         import { animate } from 'js/anime.esm.min.js';
     </script> -->
@@ -29,116 +36,180 @@
     <script src="asset/js/anime.iife.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script>
-  let idleAnim;
+        const envelopeClosed = document.getElementById('envelopeClosed');
+        const envelopeOpen = document.getElementById('envelopeOpen');
+        const backgroundCircle = document.createElement('div');
 
-function startIdleAnimation() {
-    idleAnim = anime({
-        targets: envelopeClosed,
-        rotate: [
-            { value: -1, duration: 1500, easing: 'easeInOutSine' },
-            { value: 1, duration: 1500, easing: 'easeInOutSine' }
-        ],
-        loop: true,
-        direction: 'alternate'
-    });
-}
-
-function createSparkles() {
-    const container = document.querySelector('.envelope-container');
-    for (let i = 0; i < 15; i++) {
-        let sparkle = document.createElement('div');
-        sparkle.classList.add('sparkle');
-        container.appendChild(sparkle);
-
-        sparkle.style.left = "50%";
-        sparkle.style.top = "50%";
-
-        anime({
-            targets: sparkle,
-            translateX: anime.random(-100, 100),
-            translateY: anime.random(-100, 100),
-            scale: [
-                { value: 1, duration: 0 },
-                { value: 0, duration: 1000, easing: 'easeOutQuad' }
-            ],
-            opacity: [
-                { value: 1, duration: 200 },
-                { value: 0, duration: 800 }
-            ],
-            duration: 1000,
-            complete: () => sparkle.remove()
-        });
-    }
-}
-
-function createFloatingHeartsOrFlowers() {
-    const container = document.querySelector('.envelope-container');
-    const icons = ["❤️", "🌸", "💖", "💐"]; // variasi
-    for (let i = 0; i < 8; i++) {
-        let particle = document.createElement('div');
-        particle.classList.add('floating-particle');
-        particle.textContent = icons[Math.floor(Math.random() * icons.length)];
-        container.appendChild(particle);
-
-        particle.style.left = "50%";
-        particle.style.top = "50%";
-        particle.style.position = "absolute";
-        particle.style.fontSize = anime.random(16, 28) + "px";
-
-        anime({
-            targets: particle,
-            translateX: anime.random(-80, 80),
-            translateY: anime.random(-150, -250),
-            opacity: [
-                { value: 1, duration: 300 },
-                { value: 0, duration: 1500 }
-            ],
-            duration: 1800,
-            easing: 'easeOutCubic',
-            complete: () => particle.remove()
-        });
-    }
-}
-
-// Jalankan idle di awal
-startIdleAnimation();
-
-document.querySelector('.envelope-container').addEventListener('click', function() {
-    idleAnim.pause();
-
-    anime({
-        targets: '#envelopeClosed',
-        opacity: 0,
-        duration: 500,
-        easing: 'easeInOutQuad'
-    });
-
-    anime({
-        targets: '#envelopeOpen',
-        opacity: 1,
-        duration: 500,
-        easing: 'easeInOutQuad',
-        complete: function() {
-            createSparkles();
-            createFloatingHeartsOrFlowers();
-
-            setTimeout(() => {
-                window.location.href = "index.html"; // ganti ke halaman tujuan
-            }, 2000);
+        function startIdleAnimation() {
+            idleAnim = anime({
+                targets: envelopeClosed,
+                rotate: [
+                    { value: -1, duration: 1500, easing: 'easeInOutSine' },
+                    { value: 1, duration: 1500, easing: 'easeInOutSine' }
+                ],
+                loop: true,
+                direction: 'alternate'
+            });
         }
-    });
-});
 
-    // const { animate } = anime;
-    // anime({
-    //     targets: '.square',
-    //     translateX: 250,
-    //     rotateZ: 360,
-    //     scale: 3,
-    //     duration: 1000,
-    //     loop: true
-    // })
-        
+        backgroundCircle.classList.add('background-circle');
+        document.body.insertBefore(backgroundCircle, document.body.firstChild);
+
+        let hoverAnim = null;
+        let clickAnim = null;
+
+        function createSparkles() {
+            const container = document.querySelector('.envelope-container');
+            for (let i = 0; i < 15; i++) {
+                let sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                container.appendChild(sparkle);
+
+                sparkle.style.left = "50%";
+                sparkle.style.top = "50%";
+
+                anime({
+                    targets: sparkle,
+                    translateX: anime.random(-100, 100),
+                    translateY: anime.random(-100, 100),
+                    scale: [
+                        { value: 1, duration: 0 },
+                        { value: 0, duration: 1000, easing: 'easeOutQuad' }
+                    ],
+                    opacity: [
+                        { value: 1, duration: 200 },
+                        { value: 0, duration: 800 }
+                    ],
+                    duration: 1000,
+                    complete: () => sparkle.remove()
+                });
+            }
+        }
+
+        function createFloatingHeartsOrFlowers() {
+            const container = document.querySelector('.envelope-container');
+            const icons = ["❤️", "🌸", "💖", "💐"];
+            for (let i = 0; i < 8; i++) {
+                let particle = document.createElement('div');
+                particle.classList.add('floating-particle');
+                particle.textContent = icons[Math.floor(Math.random() * icons.length)];
+                container.appendChild(particle);
+
+                particle.style.left = "50%";
+                particle.style.top = "50%";
+                particle.style.position = "absolute";
+                particle.style.fontSize = anime.random(16, 28) + "px";
+
+                anime({
+                    targets: particle,
+                    translateX: anime.random(-80, 80),
+                    translateY: anime.random(-150, -250),
+                    opacity: [
+                        { value: 1, duration: 300 },
+                        { value: 0, duration: 1500 }
+                    ],
+                    duration: 1800,
+                    easing: 'easeOutCubic',
+                    complete: () => particle.remove()
+                });
+            }
+        }
+
+        startIdleAnimation()
+
+        envelopeClosed.addEventListener('mouseenter', () => {
+            if (clickAnim) return; // kalau sudah klik, jangan hover anim lagi
+            hoverAnim = anime({
+                targets: envelopeClosed,
+                scale: [
+                    { value: 1, duration: 700, easing: 'easeInOutSine' },
+                    { value: 1.05, duration: 700, easing: 'easeInOutSine' }
+                ],
+                loop: true,
+                direction: 'alternate'
+            });
+        });
+        envelopeClosed.addEventListener('mouseleave', () => {
+            if (hoverAnim) {
+                hoverAnim.pause();
+                hoverAnim = null;
+                anime({
+                    targets: envelopeClosed,
+                    scale: 1,
+                    duration: 300,
+                    easing: 'easeOutQuad'
+                });
+            }
+        });
+
+        document.querySelector('.envelope-container').addEventListener('click', function () {
+            // stop hover anim
+            if (hoverAnim) {
+                hoverAnim.pause();
+                hoverAnim = null;
+            }
+
+            // animasi denyut intens sebelum amplop terbuka
+            clickAnim = anime({
+                targets: envelopeClosed,
+                scale: [
+                    { value: 1, duration: 400, easing: 'easeInOutSine' },
+                    { value: 1.1, duration: 400, easing: 'easeInOutSine' }
+                ],
+                loop: 4,
+                direction: 'alternate',
+                complete: () => {
+                    // fade amplop tertutup
+                    anime({
+                        targets: envelopeClosed,
+                        opacity: 0,
+                        duration: 800,
+                        easing: 'easeInOutQuad',
+                        delay: 200
+                    });
+
+                    // tampilkan amplop terbuka
+                    anime({
+                        targets: envelopeOpen,
+                        opacity: 1,
+                        duration: 800,
+                        easing: 'easeInOutQuad',
+                        delay: 200,
+                        complete: () => {
+                            createSparkles();
+                            createFloatingHeartsOrFlowers();
+
+                            anime({
+                                targets: backgroundCircle,
+                                width: ['0px', '300vw'],
+                                height: ['0px', '300vw'],
+                                backgroundColor: ['#ffffff', '#ffeaf0'],
+                                easing: 'easeInOutQuad',
+                                duration: 1500,
+                                complete: () => {
+                                    document.body.style.backgroundColor = '#ffeaf0';
+                                }
+                            });
+
+                        }
+                    });
+                }
+            });
+        });
+
+
+
+        // const { animate } = anime;
+        // anime({
+        //     targets: '.square',
+        //     translateX: 250,
+        //     rotateZ: 360,
+        //     scale: 3,
+        //     duration: 1000,
+        //     loop: true
+        // })
+
     </script>
 </body>
+
 </html>
