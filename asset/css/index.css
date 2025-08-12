@@ -208,6 +208,7 @@ body {
         max-width: 350px;
         padding: 15px;
         margin-bottom: 20px;
+        transform: none;
     }
     
     .love-message .cat {
@@ -265,6 +266,8 @@ body {
         padding: 10px;
         border-radius: 10px;
         margin-bottom: 15px;
+
+        transform: none;
     }
     
     
