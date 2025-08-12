@@ -92,38 +92,39 @@ body {
     position: absolute;
     top: 50px;
     text-align: center;
-    max-width: 420px; /* Diubah dari 600px menjadi 420px (600 * 0.7) */
-    padding: 20px; /* Diubah dari 30px menjadi 20px */
+    max-width: 420px; 
+    padding: 20px; 
     background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px; /* Diubah dari 20px menjadi 15px */
-    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.2); /* Efek bayangan disesuaikan */
-    margin-bottom: 30px; /* Diubah dari 40px menjadi 30px */
+    border-radius: 15px; 
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.2); 
+    margin-bottom: 30px; 
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
+
+    transform: scale(0.7); /* Mengecilkan seluruh isi */
+    transform-origin: top center;
 }
 
-/* Penyesuaian gambar kucing */
 .love-message .cat {
-    max-width: 50%; /* Lebar gambar maksimal 100% dari container */
-    height: auto; /* Tinggi otomatis agar proporsional */
-    margin: 15px auto; /* Margin atas/bawah 15px, tengah secara horizontal */
-    display: block; /* Agar margin auto berfungsi */
+    max-width: 50%; 
+    height: auto; 
+    margin: 15px auto; 
+    display: block; 
     border-radius: 10px;
 }
 
-/* Penyesuaian ukuran font di dalam kartu */
 .love-message h1 {
-    font-size: 1.75rem; /* Diubah dari 2.5rem menjadi 1.75rem (2.5 * 0.7) */
+    font-size: 1.75rem; 
     color: #d6336c;
-    margin-bottom: 15px; /* Diubah dari 20px menjadi 15px */
+    margin-bottom: 15px; 
     font-family: 'Cursive', sans-serif;
 }
 
 .love-message p {
-    font-size: 0.9rem; /* Diubah dari 1.3rem menjadi 0.9rem (1.3 * 0.7) */
+    font-size: 0.9rem; 
     color: #666;
-    line-height: 1.5; /* Line-height disesuaikan */
-    margin-bottom: 10px; /* Diubah dari 15px menjadi 10px */
+    line-height: 1.5; 
+    margin-bottom: 10px; 
 }
 
 .draggable-images {
