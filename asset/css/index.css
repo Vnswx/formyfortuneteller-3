@@ -101,7 +101,7 @@ body {
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
 
-    transform: scale(0.7); /* Mengecilkan seluruh isi */
+    transform: scale(0.7); 
     transform-origin: top center;
 }
 
