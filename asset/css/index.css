@@ -1,0 +1,74 @@
+body {
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+    height: 100vh;           
+    margin: 0;
+    background: linear-gradient(180deg, #fff4f7 0%, #ffeaf0 100%);
+}
+
+.envelope-container {
+    position: relative;
+    display: flex; /* pastikan isi tetap center */
+    justify-content: center;
+    align-items: center;
+    width: 50vw; /* Gunakan persentase */
+    max-width: 300px; /* Batasi ukuran max */
+    min-width: 150px; /* Batasi ukuran min */
+    cursor: pointer;
+}
+
+.envelope {
+    position: absolute;
+    top: -80px;
+    left: 0;
+    width: 100%; 
+    height: auto;
+}
+
+#envelopeOpen{
+    top: -33px
+}
+
+.sparkle {
+    position: absolute;
+    width: 0.5vw;
+    height: 0.5vw;
+    max-width: 6px;
+    max-height: 6px;
+    background: yellow;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.floating-particle {
+    pointer-events: none;
+    user-select: none;
+    font-size: 2vw; /* Sesuai lebar layar */
+}
+
+/* --- RESPONSIVE BREAKPOINTS --- */
+@media (max-width: 768px) {
+    .envelope-container {
+        width: 70vw;
+    }
+    #envelopeOpen {
+        top: -200px;
+    }
+    .floating-particle {
+        font-size: 4vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .envelope-container {
+        width: 80vw;
+    }
+    #envelopeOpen {
+        top: -200px;
+    }
+    .sparkle {
+        width: 1vw;
+        height: 1vw;
+    }
+}
