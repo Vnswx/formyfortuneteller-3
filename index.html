@@ -11,7 +11,7 @@
 <body>
     <div class="background-circle"></div>
     <div class="envelope-container">
-        <img src="asset/img/atutup.png" id="envelopeClosed" class="envelope" style="width: 89%; left: 17px;" />
+        <img src="asset/img/atutup.png" id="envelopeClosed" class="envelope" style="width: 89%; left: 15px;" />
         <img src="asset/img/abuka.png" id="envelopeOpen" class="envelope" style="opacity: 0;" />
     </div>
 
@@ -244,7 +244,6 @@
             }
         }
 
-        // Tambahkan pengecekan sebelum menjalankan animasi
         if (envelopeClosed) {
             startIdleAnimation();
 
@@ -292,7 +291,6 @@
                     direction: 'alternate',
                     easing: 'easeInOutSine',
                     complete: () => {
-                        // ... (sisa kode animasi yang Anda berikan)
                         anime({
                             targets: backgroundCircle,
                             width: ['0px', '300vw'],
