@@ -6,13 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="asset/css/index.css">
     <title>My Elaa</title>
-    <style>
-        .square {
-            width: 80px;
-            height: 80px;
-            background: tomato;
-        }
-    </style>
 </head>
 
 <body>
@@ -20,18 +13,25 @@
     <div class="envelope-container">
         <img src="asset/img/atutup.png" id="envelopeClosed" class="envelope" style="width: 89%; left: 17px;" />
         <img src="asset/img/abuka.png" id="envelopeOpen" class="envelope" style="opacity: 0;" />
-        <div id="letter"
-            style="opacity:0; position: absolute; top: 60%; left: 50%; transform: translate(-50%, 20px); max-width: 80%; text-align: center; font-family: 'Cursive', sans-serif; font-size: 1.2rem; color: #d6336c;">
-            <p>Dear Kamu, terima kasih sudah jadi bagian terbaik dalam hidupku 💖</p>
+    </div>
+
+    <div class="revealed-content" id="revealedContent">
+        <div class="love-message">
+            <h1>Buat Elaa ❤️</h1>
+            <p>Terima kasih sudah jadi bagian terbaik dalam hidupku</p>
+            <p>Kamu adalah alasan mengapa hari-hariku penuh warna</p>
+            <p>Semoga kita selalu bersama sampai tua nanti</p>
+        </div>
+
+        <div class="draggable-images" id="draggableContainer">
+            <!-- Draggable items akan ditambahkan via JavaScript -->
         </div>
     </div>
 
-    <!-- <div class="square"></div> -->
+    <div class="instruction" id="instruction">
+        💝 Drag gambar dan emoji ke mana saja yang kamu mau! 💝
+    </div>
 
-    <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script> -->
-    <!-- <script type="module">
-        import { animate } from 'js/anime.esm.min.js';
-    </script> -->
 
     <script src="asset/js/anime.iife.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
@@ -39,6 +39,147 @@
         const envelopeClosed = document.getElementById('envelopeClosed');
         const envelopeOpen = document.getElementById('envelopeOpen');
         const backgroundCircle = document.createElement('div');
+        const revealedContent = document.getElementById('revealedContent');
+        const instruction = document.getElementById('instruction');
+        const draggableContainer = document.getElementById('draggableContainer');
+
+        let hoverAnim = null;
+        let clickAnim = null;
+        let idleAnim = null;
+
+        // Draggable functionality
+        let draggedElement = null;
+        let initialX = 0;
+        let initialY = 0;
+        let currentX = 0;
+        let currentY = 0;
+
+        function makeDraggable(element) {
+            element.addEventListener('mousedown', dragStart);
+            element.addEventListener('touchstart', dragStart);
+        }
+
+        function dragStart(e) {
+            e.preventDefault();
+            draggedElement = e.target.closest('.draggable-item');
+
+            if (e.type === 'mousedown') {
+                initialX = e.clientX;
+                initialY = e.clientY;
+            } else {
+                initialX = e.touches[0].clientX;
+                initialY = e.touches[0].clientY;
+            }
+
+            const rect = draggedElement.getBoundingClientRect();
+            currentX = rect.left;
+            currentY = rect.top;
+
+            draggedElement.style.zIndex = '1000';
+
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', dragEnd);
+            document.addEventListener('touchmove', drag);
+            document.addEventListener('touchend', dragEnd);
+        }
+
+        function drag(e) {
+            if (!draggedElement) return;
+
+            e.preventDefault();
+
+            let clientX, clientY;
+            if (e.type === 'mousemove') {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            } else {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            }
+
+            const deltaX = clientX - initialX;
+            const deltaY = clientY - initialY;
+
+            const newX = currentX + deltaX;
+            const newY = currentY + deltaY;
+
+            draggedElement.style.left = newX + 'px';
+            draggedElement.style.top = newY + 'px';
+        }
+
+        function dragEnd() {
+            if (draggedElement) {
+                draggedElement.style.zIndex = '11';
+                draggedElement = null;
+            }
+
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('mouseup', dragEnd);
+            document.removeEventListener('touchmove', drag);
+            document.removeEventListener('touchend', dragEnd);
+        }
+
+        function createDraggableItems() {
+            const items = [
+                { type: 'heart', content: '❤️' },
+                { type: 'heart', content: '💖' },
+                { type: 'heart', content: '💕' },
+                { type: 'heart', content: '🌸' },
+                { type: 'heart', content: '🌹' },
+                { type: 'heart', content: '💐' },
+                { type: 'heart', content: '⭐' },
+                { type: 'heart', content: '✨' },
+                { type: 'heart', content: '🦋' },
+                { type: 'heart', content: '🎈' }
+            ];
+
+            const containerRect = draggableContainer.getBoundingClientRect();
+            const itemSize = Math.min(80, window.innerWidth * 0.12); // Responsive item size
+
+            items.forEach((item, index) => {
+                const draggableItem = document.createElement('div');
+                draggableItem.className = `draggable-item ${item.type}`;
+
+                if (item.type === 'heart') {
+                    draggableItem.textContent = item.content;
+                } else {
+                    const img = document.createElement('img');
+                    img.src = item.content;
+                    img.alt = 'Draggable image';
+                    draggableItem.appendChild(img);
+                }
+
+                // Better responsive positioning
+                const cols = Math.floor(window.innerWidth / (itemSize + 20));
+                const rows = Math.ceil(items.length / cols);
+                const col = index % cols;
+                const row = Math.floor(index / cols);
+
+                const startX = (window.innerWidth - (cols * (itemSize + 20) - 20)) / 2;
+                const startY = window.innerHeight * 0.6;
+
+                const randomX = startX + col * (itemSize + 20) + Math.random() * 20 - 10;
+                const randomY = startY + row * (itemSize + 20) + Math.random() * 20 - 10;
+
+                draggableItem.style.left = randomX + 'px';
+                draggableItem.style.top = randomY + 'px';
+
+                document.body.appendChild(draggableItem); // Append to body for full screen drag
+                makeDraggable(draggableItem);
+
+                // Animate in
+                anime({
+                    targets: draggableItem,
+                    scale: [0, 1],
+                    rotate: [0, 360],
+                    opacity: [0, 1],
+                    duration: 1000,
+                    delay: index * 100,
+                    easing: 'easeOutElastic(1, .8)'
+                });
+            });
+        }
+
 
         function startIdleAnimation() {
             idleAnim = anime({
@@ -55,8 +196,10 @@
         backgroundCircle.classList.add('background-circle');
         document.body.insertBefore(backgroundCircle, document.body.firstChild);
 
-        let hoverAnim = null;
-        let clickAnim = null;
+        // let hoverAnim = null;
+        // let clickAnim = null;
+
+
 
         function createSparkles() {
             const container = document.querySelector('.envelope-container');
@@ -117,6 +260,7 @@
 
         startIdleAnimation()
 
+        // Animasi hover: denyut halus
         envelopeClosed.addEventListener('mouseenter', () => {
             if (clickAnim) return; // kalau sudah klik, jangan hover anim lagi
             hoverAnim = anime({
@@ -143,35 +287,48 @@
         });
 
         document.querySelector('.envelope-container').addEventListener('click', function () {
-            // stop hover anim
             if (hoverAnim) {
                 hoverAnim.pause();
                 hoverAnim = null;
             }
+            if (idleAnim) {
+                idleAnim.pause();
+                idleAnim = null;
+            }
 
-            // animasi denyut intens sebelum amplop terbuka
             clickAnim = anime({
                 targets: envelopeClosed,
-                scale: [
-                    { value: 1, duration: 400, easing: 'easeInOutSine' },
-                    { value: 1.1, duration: 400, easing: 'easeInOutSine' }
-                ],
+                scale: [1, 1.1],
+                duration: 400,
                 loop: 4,
                 direction: 'alternate',
+                easing: 'easeInOutSine',
                 complete: () => {
-                    // fade amplop tertutup
+                    // Animasi background circle
+                    anime({
+                        targets: backgroundCircle,
+                        width: ['0px', '300vw'],
+                        height: ['0px', '300vw'],
+                        backgroundColor: ['#ffffff', '#ffeaf0'],
+                        easing: 'easeInOutQuad',
+                        duration: 1500
+                    });
+
+                    // Fade out amplop tertutup
                     anime({
                         targets: envelopeClosed,
                         opacity: 0,
+                        scale: 0.5,
                         duration: 800,
                         easing: 'easeInOutQuad',
                         delay: 200
                     });
 
-                    // tampilkan amplop terbuka
+                    // Fade in amplop terbuka
                     anime({
                         targets: envelopeOpen,
                         opacity: 1,
+                        scale: [0.5, 1.2, 1],
                         duration: 800,
                         easing: 'easeInOutQuad',
                         delay: 200,
@@ -179,18 +336,46 @@
                             createSparkles();
                             createFloatingHeartsOrFlowers();
 
-                            anime({
-                                targets: backgroundCircle,
-                                width: ['0px', '300vw'],
-                                height: ['0px', '300vw'],
-                                backgroundColor: ['#ffffff', '#ffeaf0'],
-                                easing: 'easeInOutQuad',
-                                duration: 1500,
-                                complete: () => {
-                                    document.body.style.backgroundColor = '#ffeaf0';
-                                }
-                            });
+                            // Hilangkan amplop setelah 2 detik dan tampilkan content
+                            setTimeout(() => {
+                                anime({
+                                    targets: '.envelope-container',
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 1000,
+                                    easing: 'easeInOutQuad',
+                                    complete: () => {
+                                        document.querySelector('.envelope-container').style.display = 'none';
 
+                                        // Tampilkan revealed content
+                                        revealedContent.classList.add('show');
+
+                                        // Animate message
+                                        anime({
+                                            targets: '.love-message',
+                                            translateY: [50, 0],
+                                            opacity: [0, 1],
+                                            duration: 1000,
+                                            easing: 'easeOutQuad',
+                                            complete: () => {
+                                                // Show draggable items
+                                                createDraggableItems();
+
+                                                // Show instruction
+                                                setTimeout(() => {
+                                                    instruction.classList.add('show');
+                                                    anime({
+                                                        targets: instruction,
+                                                        translateY: [20, 0],
+                                                        duration: 500,
+                                                        easing: 'easeOutQuad'
+                                                    });
+                                                }, 500);
+                                            }
+                                        });
+                                    }
+                                });
+                            }, 2000);
                         }
                     });
                 }

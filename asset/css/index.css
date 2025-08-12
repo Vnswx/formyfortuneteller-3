@@ -5,17 +5,18 @@ body {
     height: 100vh;           
     margin: 0;
     transition: background-color 1s ease;
+    overflow: hidden;
     /* background: linear-gradient(180deg, #fff4f7 0%, #ffeaf0 100%); */
 }
 
 .envelope-container {
     position: relative;
-    display: flex; /* pastikan isi tetap center */
+    display: flex; 
     justify-content: center;
     align-items: center;
-    width: 50vw; /* Gunakan persentase */
-    max-width: 300px; /* Batasi ukuran max */
-    min-width: 150px; /* Batasi ukuran min */
+    width: 50vw; 
+    max-width: 300px; 
+    min-width: 150px; 
     cursor: pointer;
 }
 
@@ -45,19 +46,19 @@ body {
 .floating-particle {
     pointer-events: none;
     user-select: none;
-    font-size: 2vw; /* Sesuai lebar layar */
+    font-size: 2vw; 
 }
 
 .background-circle {
-    position: fixed; /* agar selalu di belakang, dan menutupi viewport */
+    position: fixed; 
     top: 50%;
     left: 50%;
     width: 0;
     height: 0;
-    background-color: white; /* warna awal */
+    background-color: white; 
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    z-index: 0; /* pastikan di belakang amplop */
+    z-index: 0; 
     pointer-events: none;
 }
 
@@ -65,30 +66,123 @@ body {
     pointer-events: none;
     user-select: none;
   }
-  
-
-/* --- RESPONSIVE BREAKPOINTS --- */
-@media (max-width: 768px) {
-    .envelope-container {
-        width: 70vw;
-    }
-    #envelopeOpen {
-        top: -115px;
-    }
-    .floating-particle {
-        font-size: 4vw;
-    }
+  .revealed-content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    z-index: 10;
+    pointer-events: none;
 }
 
-@media (max-width: 480px) {
-    .envelope-container {
-        width: 80vw;
+.revealed-content.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.love-message {
+    text-align: center;
+    max-width: 600px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin-bottom: 40px;
+    backdrop-filter: blur(10px);
+}
+
+.love-message h1 {
+    font-size: 2.5rem;
+    color: #d6336c;
+    margin-bottom: 20px;
+    font-family: 'Cursive', sans-serif;
+}
+
+.love-message p {
+    font-size: 1.3rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.draggable-images {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+}
+
+.draggable-item {
+    position: absolute;
+    cursor: grab;
+    transition: transform 0.2s ease;
+    user-select: none;
+    z-index: 11;
+}
+
+.draggable-item:hover {
+    transform: scale(1.1);
+}
+
+.draggable-item:active {
+    cursor: grabbing;
+    transform: scale(1.05);
+}
+
+.draggable-item img {
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.draggable-item.heart {
+    font-size: 60px;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+}
+
+.instruction {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px 30px;
+    border-radius: 25px;
+    color: #d6336c;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    z-index: 12;
+}
+
+.instruction.show {
+    opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .love-message h1 {
+        font-size: 2rem;
     }
-    #envelopeOpen {
-        top: -115px;
+    
+    .love-message p {
+        font-size: 1.1rem;
     }
-    .sparkle {
-        width: 1vw;
-        height: 1vw;
+    
+    .draggable-item img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .draggable-item.heart {
+        font-size: 45px;
     }
 }
