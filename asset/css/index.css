@@ -6,7 +6,6 @@ body {
     height: 100vh;
     margin: 0;
     transition: background-color 1s ease;
-    overflow: hidden;
 }
 
 .envelope-container {
@@ -68,15 +67,9 @@ body {
 }
 
 .revealed-content {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
+    display: grid;
+    place-items: center;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     opacity: 0;
     z-index: 10;
     pointer-events: none;
@@ -90,14 +83,13 @@ body {
 
 .love-message {
     position: absolute;
-    top: 35px;
+    top: 40px;
     text-align: center;
     max-width: 420px; 
     padding: 20px; 
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px; 
     box-shadow: 0 7px 20px rgba(0, 0, 0, 0.2); 
-    margin-bottom: 30px; 
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
 
